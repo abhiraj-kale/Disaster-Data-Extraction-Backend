@@ -36,5 +36,22 @@ def push_twitter_data(disaster, created_at, text, username, source, source_url, 
     "location": location
   })
 
+def push_keywords(list, user_id):
+    db.child('victims').child(user_id).update({
+      "keywords" : list
+      })
+
 def get_all_data():
     return (json.dumps(db.child("victims").get().val()))
+
+def upload_audio(user_id): 
+  storage = firebase.storage()
+  
+  path_on_cloud = f'audio/Mumbai/{user_id}/foo.wav'
+  local = "street_20dB.wav"
+  storage.child(path_on_cloud).put(local)
+  
+def download_file(path_on_cloud, local_path):
+  storage = firebase.storage()
+  storage.child(path_on_cloud).download(local_path)
+ 
